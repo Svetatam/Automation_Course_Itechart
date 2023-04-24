@@ -1,0 +1,21 @@
+{
+  "name": "automation_course_itechart",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Svetatam/Automation_Course_Itechart.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Svetatam/Automation_Course_Itechart/issues"
+  },
+  "homepage": "https://github.com/Svetatam/Automation_Course_Itechart#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.32.3"
+  }
+}

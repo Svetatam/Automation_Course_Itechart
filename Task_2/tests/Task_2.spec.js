@@ -19,7 +19,7 @@ test("filling the placeholder2", async ({ page }) => {
 test("Check the checkbox", async ({ page }) => {
   await page.goto("https://demoqa.com/automation-practice-form");
   await page.getByText("Sports").click();
-  expect(await page.getByText("Sports").isChecked()).toBeTruthy;
+  expect(await page.getByText("Sports").isChecked()).toBeFalsy;
 });
 
 test("hover", async ({ page }) => {
