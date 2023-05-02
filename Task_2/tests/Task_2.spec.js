@@ -29,9 +29,7 @@ test("hover", async ({ page }) => {
 
 test("drag & drop ", async ({ page }) => {
   await page.goto("https://demoqa.com/droppable");
-  await page.locator("#draggable").dragTo(
-    page.locator("#simpleDropContainer #droppable.drop-box.ui-droppable") //исправить локатор
-  );
+  await page.locator("#draggable").dragTo(page.locator("#simpleDropContainer"));
 });
 
 test("Upload one file", async ({ page }) => {
