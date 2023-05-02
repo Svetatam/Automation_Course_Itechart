@@ -31,10 +31,9 @@ test("login form", async ({ page }) => {
   //создать ожидание для перехвата get запроса
 
   const responsePromise = page.waitForResponse(
-    (response) =>
-      response.url() === "https://demoqa.com/BookStore/v1/Books" &&
-      response.status() === 200
+    "https://demoqa.com/BookStore/v1/Books"
   );
+  await page.goto("https://demoqa.com/profile");
 
   //в меню слева кликнуть Book Store
 
@@ -42,46 +41,65 @@ test("login form", async ({ page }) => {
     .getByRole("listitem")
     .filter({ hasText: /^Book Store$/ })
     .click();
-  // const response = await responsePromise;
+
+  //посчитать количество книг на UI
+  const listOfBooks = page.locator(".action-buttons");
+  //эта проверка чисто для себя
+  await expect(listOfBooks).toHaveCount(8);
+
   // Дождаться загрузки страницы
   await page.waitForSelector(".rt-tbody");
 
   // Сделать скриншот страницы и сохранить
-  await page.screenshot({ path: "book-store.png" });
+  await page.screenshot({ path: "book-store.png", fullPage: true });
 
   //проверить перехваченный GET запрос
-  const responseBooks = await response;
-  // console.log(responseBooks.status());
-  const responseBooksBody = await responseBooks.json();
-  await expect(responseBooksBody.books).toHaveLength(8);
-  await expect(response.status()).toBe(200);
-});
-// expect(response.status).toBe(200);
+  const responseBooks = await responsePromise;
 
-test("проверка GET запроса на странице https://demoqa.com/BookStore/v1/Books", async ({
-  page,
-}) => {
-  // переходим на страницу
-  await page.goto("https://demoqa.com/books");
-  // ждем перехвата GET запроса
-  const response = await page.waitForResponse((response) => {
-    response.url() === "https://demoqa.com/BookStore/v1/Books" &&
-      response.status() === 200;
+  const responseBooksBody = await responseBooks.json();
+  await expect(responseBooks.status()).toBe(200);
+  await expect(page.locator(".action-buttons")).toHaveCount(
+    responseBooksBody.books.length
+  );
+
+  //модифицировать ответ от GET. Изменить количество страниц на случайное число от 1 до 1000
+
+  await page.route(
+    "https://demoqa.com/BookStore/v1/Book?ISBN=*",
+    async (route) => {
+      const randomNumber = Math.floor(Math.random() * 1000) + 1;
+      const response = await route.fetch();
+      console.log(response.json());
+      let body = await response.text();
+      let booksBody = JSON.parse(body);
+      body = body.replace(booksBody.pages, randomNumber);
+      route.fulfill({
+        response,
+        body,
+        headers: { ...response.headers() },
+      });
+    }
+  );
+
+  await page.getByText("Git Pocket Guide").click();
+  await page.waitForSelector(".profile-wrapper");
+
+  // await page.screenshot({ path: "book-store.png", fullPage: true });
+
+  //выполнить API запрос
+  //В хедерах добавить токен
+  const responseAPI = await page.request.get(
+    `https://demoqa.com/Account/v1/User/${userID}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  const books = await responseAPI.json();
+  expect(books).toEqual({
+    books: [],
+    userId: "012fd6c7-30b3-4ff5-a616-6780b1d9da55",
+    username: "SvTam",
   });
-  // проверяем статус ответа
-  expect(response.status()).toBe(200);
-  // получаем количество книг через UI
-  const bookCount = await page.$$eval(".rt-tr-group", (groups) => {
-    return groups.reduce((acc, group) => {
-      const count = group
-        .querySelector(".rt-td:nth-child(2)")
-        .textContent.trim();
-      return acc + parseInt(count);
-    }, 0);
-  });
-  // получаем количество книг из перехваченного ответа
-  const { books } = await response.json();
-  const bookCountFromResponse = books.length;
-  // сравниваем количество книг
-  expect(bookCountFromResponse).toBe(bookCount);
 });
