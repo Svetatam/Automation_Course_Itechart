@@ -19,7 +19,7 @@ test("filling the placeholder2", async ({ page }) => {
 test("Check the checkbox", async ({ page }) => {
   await page.goto("https://demoqa.com/automation-practice-form");
   await page.getByText("Sports").click();
-  expect(await page.getByText("Sports").isChecked()).toBeFalsy;
+  await expect(page.getByText("Sports")).toBeChecked();
 });
 
 test("hover", async ({ page }) => {
@@ -29,11 +29,9 @@ test("hover", async ({ page }) => {
 
 test("drag & drop ", async ({ page }) => {
   await page.goto("https://demoqa.com/droppable");
-  await page
-    .locator("#draggable.drag-box.mt-4.ui-draggable.ui-draggable-handle")
-    .dragTo(
-      page.locator("#simpleDropContainer #droppable.drop-box.ui-droppable")
-    );
+  await page.locator("#draggable").dragTo(
+    page.locator("#simpleDropContainer #droppable.drop-box.ui-droppable") //исправить локатор
+  );
 });
 
 test("Upload one file", async ({ page }) => {
