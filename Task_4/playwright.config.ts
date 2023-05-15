@@ -1,5 +1,6 @@
-// @ts-check
-const { defineConfig, devices } = require('@playwright/test');
+import { defineConfig, devices } from '@playwright/test'
+
+
 
 /**
  * Read environment variables from file.
@@ -8,9 +9,9 @@ const { defineConfig, devices } = require('@playwright/test');
 // require('dotenv').config();
 
 /**
- * @see https://playwright.dev/docs/test-configuration
+ * See https://playwright.dev/docs/test-configuration.
  */
-module.exports = defineConfig({
+export default defineConfig({
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -35,14 +36,17 @@ module.exports = defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: { ...devices['Desktop Chrome'] ,
+      launchOptions: {
+        args: ['--start-maximized'],
+      }}
     },
 
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
     },
-
+   
     // {
     //   name: 'webkit',
     //   use: { ...devices['Desktop Safari'] },
@@ -67,6 +71,7 @@ module.exports = defineConfig({
     //   name: 'Google Chrome',
     //   use: { ..devices['Desktop Chrome'], channel: 'chrome' },
     // },
+    
   ],
 
   /* Run your local dev server before starting the tests */
@@ -75,5 +80,6 @@ module.exports = defineConfig({
   //   url: 'http://127.0.0.1:3000',
   //   reuseExistingServer: !process.env.CI,
   // },
-});
+ 
+})
 

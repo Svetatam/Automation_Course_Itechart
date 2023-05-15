@@ -1,6 +1,8 @@
 import { test, expect } from "@playwright/test";
 
-import { login, password } from "./creds.spec.js";
+import creds from "./creds.json";
+const login = creds["login"];
+const password = creds["password"];
 
 test("login form", async ({ page }) => {
   await page.goto("https://demoqa.com/login");
@@ -13,10 +15,10 @@ test("login form", async ({ page }) => {
   // проверить, что есть куки
 
   const cookies = await page.context().cookies();
-  expect(cookies.find((c) => c.name == "userID").value).toBeTruthy();
-  expect(cookies.find((c) => c.name == "userName").value).toBeTruthy();
-  expect(cookies.find((c) => c.name == "expires").value).toBeTruthy();
-  expect(cookies.find((c) => c.name == "token").value).toBeTruthy();
+  expect(cookies.find((c) => c.name === "userID").value).toBeTruthy();
+  expect(cookies.find((c) => c.name === "userName").value).toBeTruthy();
+  expect(cookies.find((c) => c.name === "expires").value).toBeTruthy();
+  expect(cookies.find((c) => c.name === "token").value).toBeTruthy();
 
   //сохранить userID и token
   const userID = cookies.find((c) => c.name == "userID").value;
@@ -63,11 +65,10 @@ test("login form", async ({ page }) => {
   );
 
   //модифицировать ответ от GET. Изменить количество страниц на случайное число от 1 до 1000
-
+  const randomNumber = Math.floor(Math.random() * 1000) + 1;
   await page.route(
     "https://demoqa.com/BookStore/v1/Book?ISBN=*",
     async (route) => {
-      const randomNumber = Math.floor(Math.random() * 1000) + 1;
       const response = await route.fetch();
       console.log(response.json());
       let body = await response.text();
@@ -80,9 +81,15 @@ test("login form", async ({ page }) => {
       });
     }
   );
-
-  await page.getByText("Git Pocket Guide").click();
+  await page.getByText("Git Pocket Guide").click(); //названия могут меняться.Надо переделать
   await page.waitForSelector(".profile-wrapper");
+
+  const pages = await page.$eval(
+    "#pages-wrapper > div.col-md-9.col-sm-12",
+    (el) => el.textContent
+  );
+
+  expect(pages).toBe(String(randomNumber));
 
   // await page.screenshot({ path: "book-store.png", fullPage: true });
 
@@ -96,10 +103,16 @@ test("login form", async ({ page }) => {
       },
     }
   );
+
   const books = await responseAPI.json();
-  expect(books).toEqual({
-    books: [],
-    userId: "012fd6c7-30b3-4ff5-a616-6780b1d9da55",
-    username: "SvTam",
-  });
+
+  // Проверка наличия массива книг
+  expect(books).toHaveProperty("books");
+  expect(Array.isArray(books.books)).toBeTruthy();
+
+  // Проверка соответствия ID пользователя
+  expect(books).toHaveProperty("userId", userID);
+
+  // Проверка соответствия имени пользователя
+  expect(books).toHaveProperty("username", login);
 });
