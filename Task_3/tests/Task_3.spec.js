@@ -81,7 +81,13 @@ test("login form", async ({ page }) => {
       });
     }
   );
-  await page.getByText("Git Pocket Guide").click(); //названия могут меняться.Надо переделать
+
+  await page
+    .locator(
+      "#app > div > div > div.row > div.col-12.mt-4.col-md-6 > div.books-wrapper > div.ReactTable.-striped.-highlight > div.rt-table > div.rt-tbody > div:nth-child(1) > div > div:nth-child(2)"
+    ) // я не знаю как найти нормальный локатор
+    .click();
+
   await page.waitForSelector(".profile-wrapper");
 
   const pages = await page.$eval(
