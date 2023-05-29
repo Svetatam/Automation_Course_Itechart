@@ -2,43 +2,38 @@ import { test, expect, chromium } from '@playwright/test'
 
 // import { login, password } from './creds'
 
+import creds from './creds2.json'
+const login = creds['login']
+const password = creds['password']
 
-import creds  from './creds2.json'
-const login = creds['login'];
-const password =creds['password'];
+test('login form', async () => {
+  const browser = await chromium.launch({
+    logger: {
+      isEnabled: () => true,
+      log: (name, message, severity) =>
+        console.log(`${name} ${message} ${severity}`),
+    },
+  })
+  const context = await browser.newContext()
+  const page = await context.newPage()
 
-  test('login form', async ({ request }) => {
-    const browser = await chromium.launch({
-      logger: {
-              isEnabled: () => true,
-              log: (name, message, severity) =>
-                console.log(`${name} ${message} ${severity}`),
-            },
-          })
-          const context = await browser.newContext()
-          const page = await context.newPage()
-        
-
-         
-    await test.step('go to login page and fill credentials', async () => {
-     
-      await page.goto('https://demoqa.com/login')
-      await page.fill('#userName', login)
-      await page.fill('#password', password)
-      await page.click('#login')
-    })
-
+  await test.step('go to login page and fill credentials', async () => {
+    await page.goto('https://demoqa.com/login')
+    await page.fill('#userName', login)
+    await page.fill('#password', password)
+    await page.click('#login')
+  })
 
   await test.step('check for cookies', async () => {
     await expect(page).toHaveURL('https://demoqa.com/profile')
     const cookies = await page.context().cookies()
-  // @ts-ignore
+
     expect(cookies.find((c) => c.name === 'userID').value).toBeTruthy()
-  // @ts-ignore
+
     expect(cookies.find((c) => c.name === 'userName').value).toBeTruthy()
-  // @ts-ignore
+
     expect(cookies.find((c) => c.name === 'expires').value).toBeTruthy()
-  // @ts-ignore
+
     expect(cookies.find((c) => c.name === 'token').value).toBeTruthy()
   })
 
@@ -75,7 +70,7 @@ const password =creds['password'];
         console.log(response.json())
         let body = await response.text()
         const booksBody = JSON.parse(body)
-  // @ts-ignore
+
         body = body.replace(booksBody.pages, randomNumber)
         route.fulfill({
           response,
@@ -84,12 +79,12 @@ const password =creds['password'];
         })
       }
     )
-  
+
     await page
-    .locator(
-      "#app > div > div > div.row > div.col-12.mt-4.col-md-6 > div.books-wrapper > div.ReactTable.-striped.-highlight > div.rt-table > div.rt-tbody > div:nth-child(1) > div > div:nth-child(2)"
-    ) // я не знаю как найти нормальный локатор
-    .click();
+      .locator(
+        '#app > div > div > div.row > div.col-12.mt-4.col-md-6 > div.books-wrapper > div.ReactTable.-striped.-highlight > div.rt-table > div.rt-tbody > div:nth-child(1) > div > div:nth-child(2)'
+      ) // я не знаю как найти нормальный локатор
+      .click()
     await page.waitForSelector('.profile-wrapper')
     const pages = await page.$eval(
       '#pages-wrapper > div.col-md-9.col-sm-12',
@@ -99,11 +94,10 @@ const password =creds['password'];
   })
 
   await test.step('make API request and check response', async () => {
-      // @ts-ignore
     const userID = (await page.context().cookies()).find(
       (c) => c.name == 'userID'
     ).value
-  // @ts-ignore
+
     const token = (await page.context().cookies()).find(
       (c) => c.name == 'token'
     ).value
