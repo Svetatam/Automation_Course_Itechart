@@ -16,10 +16,7 @@ test('login form', async ({ page }) => {
   await loginPage.goto();
   await loginPage.fillCredentials(login, password);
   await loginPage.clickLogin();
-
-
   await profilePage.waitForURL();
-
 
   const cookies = await profilePage.getCookies();
 
@@ -30,11 +27,6 @@ test('login form', async ({ page }) => {
 
   await bookStorePage.blockImagesAndGoToBookStore();
    
-
-
-
-
-
   await test.step('wait for response and click on Book Store', async () => {
     const responsePromise = page.waitForResponse(
       'https://demoqa.com/BookStore/v1/Books'
@@ -43,8 +35,6 @@ test('login form', async ({ page }) => {
 
   await profilePage.clickBookStore();
  
-
-
   const responseBooks = await responsePromise;
   
    const responseBooksBody = await responseBooks.json();
@@ -55,10 +45,7 @@ test('login form', async ({ page }) => {
     responseBooksBody.books.length
   )
   
-
-
-
-
+  
   const randomNumber = Math.floor(Math.random() * 1000) + 1;
   await bookStorePage.modifyGetResponse(randomNumber);
   await bookStorePage.clickFirstBook();
