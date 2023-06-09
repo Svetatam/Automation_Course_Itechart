@@ -1,6 +1,6 @@
 import { expect,Page } from '@playwright/test';
 import creds from './creds3.json'
-export { LoginPage };
+
 const login = creds['login']
 const password = creds['password']
 
@@ -25,3 +25,4 @@ class LoginPage {
   }
 }
 
+export { LoginPage };

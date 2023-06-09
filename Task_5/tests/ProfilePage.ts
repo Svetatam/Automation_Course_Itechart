@@ -1,5 +1,5 @@
 import { Page, Cookie } from '@playwright/test';
-export { ProfilePage };
+
 class ProfilePage {
   private page: Page;
 
@@ -49,3 +49,4 @@ class ProfilePage {
     return responseAPI;
   }
 }
+export { ProfilePage };

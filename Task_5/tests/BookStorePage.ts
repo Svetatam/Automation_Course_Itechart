@@ -13,16 +13,8 @@ class BookStorePage {
     );
     await this.page.goto('https://demoqa.com/books');
   }
-
+ 
   
-  async waitForResponse() {
-    this.page.waitForResponse('https://demoqa.com/BookStore/v1/Books');
-  }
-
-  async getActionButtonsCount(){
-    return this.page.locator('.action-buttons').count();
-  }
-
   async modifyGetResponse(randomNumber: number): Promise<void>{
     await this.page.route(
       'https://demoqa.com/BookStore/v1/Book?ISBN=*',
