@@ -86,11 +86,14 @@ test('login form', async () => {
       ) // я не знаю как найти нормальный локатор
       .click()
     await page.waitForSelector('.profile-wrapper')
+
+
     const pages = await page.$eval(
       '#pages-wrapper > div.col-md-9.col-sm-12',
       (el) => el.textContent
     )
     expect(pages).toBe(String(randomNumber))
+
   })
 
   await test.step('make API request and check response', async () => {
@@ -121,3 +124,9 @@ test('login form', async () => {
     })
   })
 })
+
+
+
+
+
+
