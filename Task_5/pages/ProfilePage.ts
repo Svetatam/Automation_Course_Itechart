@@ -1,6 +1,4 @@
 import { Page } from '@playwright/test'
-import { CookiesUtil } from './cookiesUtil'
-import { UserUtil } from './userUtil'
 
 class ProfilePage {
   private page: Page
