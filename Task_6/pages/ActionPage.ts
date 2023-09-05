@@ -13,9 +13,6 @@ class ActionPage {
     const tab = document.querySelector('#SaleSection_13268');
     if (tab) tab.scrollIntoView();
 
-//     // Wait for the tab to load
-// await this.page.waitForTimeout(3000); 
-// await this.page.waitForSelector(discountSelector);
   });
 
   }}

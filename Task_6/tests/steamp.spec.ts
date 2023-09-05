@@ -1,7 +1,6 @@
 import { expect, test } from '@playwright/test'
 
 import { MainPage } from '../pages/MainPage'
-import { ProfilePage } from '../pages/profilePage'
 import { NewTrending  } from '../pages/newTrendingPage'
 import { DownloadUtil } from '../utils/downloadUtil'
 import { ActionPage } from '..//pages/ActionPage'
@@ -9,8 +8,7 @@ import { ActionPage } from '..//pages/ActionPage'
 test('TestSteam', async ({ page }) => {
   const mainPage = new MainPage(page)
   const actionPage = new ActionPage(page)
-  const profilePage = new ProfilePage(page)
-  const newTrending = new NewTrending(page);
+   const newTrending = new NewTrending(page);
   const downloadUtil = new DownloadUtil(page)
 
 
@@ -30,13 +28,12 @@ test('TestSteam', async ({ page }) => {
   const priceSelector = 'div.facetedbrowse_FacetedBrowseItems_NO-IP div.salepreviewwidgets_StoreSalePriceBox_Wh0L8';
   const discountSelector = 'div.facetedbrowse_FacetedBrowseItems_NO-IP div.salepreviewwidgets_StoreSaleDiscountBox_2fpFv';
   const gamesWithDiscount = await page.$$(discountSelector);
-//////////////////////////////////////////////////////////////////////////
+
   await test.step('Select game with maximum discount or maximum price', async () => {
     //3. На вкладке New and Trending выбрать игру из условия максимальной скидки (только на первой странице).
    // Если скидки отсутствуют, то выбрать игру с максимальной ценой
 
-    await page.goto('https://store.steampowered.com/category/action/?flavor=contenthub_newandtrending');//здесь переделать, чтобы не была навигация по URL!!!!!!!!!!!!
-     
+    await page.goto('https://store.steampowered.com/category/action/?flavor=contenthub_newandtrending');
   })
 
   // Scroll to the New & Trending tab
@@ -53,7 +50,6 @@ await test.step('Wait for the tab to load', async () => {
   await page.waitForTimeout(3000); 
 });
 
-// пошла NEW&TRENDING
 
 //Поиск игры с максимальной скидкой или ценой
 await test.step('Select game with maximum discount or maximum price', async () => {
@@ -108,10 +104,7 @@ await test.step('Select game with maximum discount or maximum price', async () =
 
     const maxPriceIndex = gamePrices.indexOf(Math.max(...gamePrices));
 
-
-
-
-    
+   
     // Создаем селектор для игры с максимальной ценой
     const maxPriceGameLinkSelector = "//div[contains(@class, 'StoreSalePriceWidgetContainer')]/div[contains(text(),'" + maxPriceIndex + "')]/ancestor::div[@class='ImpressionTrackedElement']//div[contains(@class, 'StoreSaleWidgetTitle')]/parent::a";
 
