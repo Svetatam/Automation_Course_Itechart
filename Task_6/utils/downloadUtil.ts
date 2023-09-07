@@ -1,5 +1,6 @@
 import { Page } from '@playwright/test'
 import fs from 'fs'
+import path from 'path'
 
 export class DownloadUtil {
   private page: Page
@@ -18,10 +19,19 @@ export class DownloadUtil {
       .click()
 
     const download = await downloadPromise
-    const savePath =
-      'C:\\Users\\s.tamashevich\\Desktop\\Automation_Course_Itechart\\Task_6\\userFiles\\at_' +
-      Date.now() +
-      '.exe'
+    const path = require('path');
+
+      // Полный путь к папке userFiles
+      const userFilesPath = path.resolve(__dirname, '../userFiles');
+      
+      // Генерировать имя файла на основе текущей даты и времени
+      const fileName = 'at_' + Date.now() + '.exe';
+      
+      // Полный путь к файлу
+      const savePath = path.join(userFilesPath, fileName);
+
+
+
     await download.saveAs(savePath)
   }
 
