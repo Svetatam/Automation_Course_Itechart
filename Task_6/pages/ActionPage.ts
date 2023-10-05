@@ -81,9 +81,11 @@ class ActionPage {
       waitUntil: 'domcontentloaded',
       timeout: 60000,
     })
-    const discountElement2 = this.page.locator(
-      '//*[@id="game_area_purchase_section_add_to_cart_172495"]/div[2]/div/div[1]/div[1]'
-    )
+    
+const discountElement2 = this.page.locator(
+  "//div[@class='game_area_purchase_game_wrapper']//*[contains(@class, 'discount_pct')]"
+)
+
 
     await expect(discountElement2).toHaveText(`-${maxDiscount}%`)
     const salePrice2 = await this.page

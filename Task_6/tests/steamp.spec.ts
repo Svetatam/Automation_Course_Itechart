@@ -50,12 +50,7 @@ test('TestSteam', async ({ page }) => {
 
     
 
-    // await test.step('Check the price', async () => {
-    //   await gamePage.comparePrice()
-
-      
-    // })
-
+   
     // Check for age verification
 
     await test.step('Check age verification', async () => {
