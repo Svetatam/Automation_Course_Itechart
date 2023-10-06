@@ -6,6 +6,8 @@ class ActionPage {
   constructor(page: Page) {
     this.page = page
   }
+
+
   // Scroll to the New & Trending tab
   async scrollTo() {
     await this.page.evaluate(async () => {

@@ -7,7 +7,7 @@ export class DownloadUtil {
   }
 
   async downloadSetupFile(page: Page) {
-    await page.locator('.header_installsteam_btn_content').click()
+    await page.locator('.header_installsteam_btn_content').click()// локатор надо вынести в Page
 
     const downloadPromise = page.waitForEvent('download')
 

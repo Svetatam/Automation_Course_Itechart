@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test'
+import { Page, expect } from '@playwright/test'
 import fs from 'fs'
 
 class NewTrending {
@@ -12,6 +12,8 @@ class NewTrending {
 
   
   async renameLatestFile(downloadPath: fs.PathLike) {
+   
+
     const files = fs.readdirSync(downloadPath)
     const latestFile = files.reduce((prev, curr) => {
       const prevTimestamp = fs.statSync(`${downloadPath}/${prev}`).ctimeMs
@@ -23,6 +25,9 @@ class NewTrending {
     fs.renameSync(`${downloadPath}/${latestFile}`, renamedFile)
     return renamedFile
   }
+
+
+
 }
 
 export { NewTrending }

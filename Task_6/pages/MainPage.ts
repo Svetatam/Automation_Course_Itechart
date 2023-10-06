@@ -1,5 +1,5 @@
 import { Page } from '@playwright/test'
-// import { text } from 'stream/consumers'
+
 
 class MainPage {
   hoverOverCategory() {

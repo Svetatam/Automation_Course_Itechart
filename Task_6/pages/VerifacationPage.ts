@@ -8,7 +8,7 @@ class VerifacationPage {
   }
 
   async isAgeVerificationRequired() {
-    //нужен ли этот код??
+   
     const ageCheckFrame = await this.page.$('iframe.agegate_iframe') 
     return !!ageCheckFrame 
   }
